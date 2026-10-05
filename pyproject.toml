@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "structured-guard"
+version = "0.2.0"
+description = "Zero-dependency reliability shield that repairs and validates malformed or truncated JSON from LLM structured outputs, tool calling and MCP for OpenAI, Claude, Gemini and local models."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "dev-stratum", email = "335769801+dev-stratum@users.noreply.github.com" },
+]
+maintainers = [
+    { name = "dev-stratum", email = "335769801+dev-stratum@users.noreply.github.com" },
+]
+keywords = [
+    "llm",
+    "structured-outputs",
+    "tool-calling",
+    "function-calling",
+    "json-repair",
+    "json-schema",
+    "mcp",
+    "model-context-protocol",
+    "openai",
+    "claude",
+    "anthropic",
+    "gemini",
+    "ollama",
+    "vllm",
+    "validation",
+    "zero-dependency",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0.0"]
+
+[project.urls]
+Homepage = "https://github.com/dev-stratum/structured-guard"
+Documentation = "https://github.com/dev-stratum/structured-guard#readme"
+Repository = "https://github.com/dev-stratum/structured-guard"
+Issues = "https://github.com/dev-stratum/structured-guard/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+structured_guard = ["py.typed"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["structured_guard"]
+
+[tool.coverage.report]
+show_missing = true
