@@ -1,0 +1,60 @@
+name: Payload that broke
+description: A real model or tool payload that was not repaired or validated correctly
+title: "Payload: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Real payloads are the most useful reports. Please make the payload
+        as small as you can, and remove API keys, tokens, personal data,
+        internal host names and absolute file paths first.
+  - type: dropdown
+    id: provider
+    attributes:
+      label: Where did the payload come from?
+      options:
+        - OpenAI (Chat Completions or Responses API)
+        - Claude (tool_use)
+        - Gemini (function_call)
+        - MCP (tools/call or CallToolResult)
+        - Ollama, vLLM or another local model
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: payload
+    attributes:
+      label: The payload
+      description: Paste it exactly as received, after removing sensitive data.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: call
+    attributes:
+      label: The call you made
+      description: For example guard_claude(payload, schema=my_schema).
+      render: python
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead
+      description: The result or the full error message.
+    validations:
+      required: true
+  - type: checkboxes
+    id: redaction
+    attributes:
+      label: Redaction
+      options:
+        - label: I removed API keys, tokens, personal data and absolute file paths
+          required: true

@@ -9,17 +9,71 @@ permissions:
 
 jobs:
   pytest:
-    runs-on: ubuntu-latest
+    name: pytest (${{ matrix.os }}, Python ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: ["3.10", "3.11", "3.12", "3.13"]
+        experimental: [false]
+        include:
+          - os: ubuntu-latest
+            python-version: "3.14"
+            experimental: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+          allow-prereleases: true
       - name: Install pytest
         run: python -m pip install "pytest>=7.0.0"
       - name: Run the offline test suite
         run: python -m pytest -q
+
+  coverage:
+    name: branch coverage report
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test tools
+        run: python -m pip install "pytest>=7.0.0" coverage
+      - name: Measure branch coverage
+        run: |
+          coverage run -m pytest -q
+          coverage report --show-missing | tee coverage.txt
+      - name: Add the figures to the job summary
+        run: |
+          echo "### Branch coverage" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat coverage.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+  package:
+    name: build and check the package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build the source distribution and the wheel
+        run: |
+          python -m pip install build twine
+          python -m build
+          python -m twine check dist/*
+      - name: Check what the distributions contain
+        run: |
+          python -m zipfile -l dist/*.whl | grep -c "structured_guard/py.typed"
+          python -m zipfile -l dist/*.whl | grep -c "adapters/openai.py"
+          tar -tzf dist/*.tar.gz | grep -c "tests/test_core.py"
+      - name: Install the wheel in a clean environment and import it
+        run: |
+          python -m venv clean-env
+          clean-env/bin/python -m pip install dist/*.whl
+          clean-env/bin/python -c "import structured_guard as g; print(g.__version__)"
