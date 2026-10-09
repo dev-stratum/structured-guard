@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import enum
 import json
+import re
 
 import pytest
 
@@ -855,6 +856,17 @@ def test_gemini_unrecoverable_malformed_calls_raise(message):
         adapters.guard_gemini(response)
 
 
+def test_gemini_oversized_or_deeply_nested_call_text_is_refused():
+    nested = "default_api.f(a=" + "[" * 60 + "]" * 60 + ")"
+    huge = "default_api.f(a='" + "x" * 20_000 + "')"
+    for text in (nested, huge):
+        response = candidate([], "MALFORMED_FUNCTION_CALL", text)
+        with pytest.raises(sg.ToolCallNotFoundError, match="MALFORMED"):
+            adapters.guard_gemini(response)
+    fine = "default_api.f(a=" + "[" * 10 + "]" * 10 + ")"
+    assert len(adapters.recover_gemini_calls(fine)) == 1
+
+
 def test_gemini_blocked_and_truncated_responses():
     blocked = candidate([], "SAFETY")
     with pytest.raises(sg.RefusalError, match="SAFETY"):
@@ -1045,4 +1057,4 @@ def test_new_exceptions_and_exports():
     assert set(adapters.__all__) >= plural | {"guard_gemini_calls"}
     for name in adapters.__all__:
         assert hasattr(adapters, name)
-    assert sg.__version__ == "0.2.0"
+    assert re.fullmatch(r"\d+\.\d+\.\d+", sg.__version__)

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "structured-guard"
-version = "0.2.0"
+version = "0.2.1"
 description = "Zero-dependency reliability shield that repairs and validates malformed or truncated JSON from LLM structured outputs, tool calling and MCP for OpenAI, Claude, Gemini and local models."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -56,6 +56,7 @@ dev = ["pytest>=7.0.0"]
 [project.urls]
 Homepage = "https://github.com/dev-stratum/structured-guard"
 Documentation = "https://github.com/dev-stratum/structured-guard#readme"
+Changelog = "https://github.com/dev-stratum/structured-guard/blob/main/CHANGELOG.md"
 Repository = "https://github.com/dev-stratum/structured-guard"
 Issues = "https://github.com/dev-stratum/structured-guard/issues"
 
@@ -71,7 +72,7 @@ testpaths = ["tests"]
 
 [tool.coverage.run]
 branch = true
-source = ["structured_guard"]
+source = ["src/structured_guard"]
 
 [tool.coverage.report]
 show_missing = true

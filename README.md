@@ -1,6 +1,7 @@
 # structured-guard
 
 [![tests](https://github.com/dev-stratum/structured-guard/actions/workflows/tests.yml/badge.svg)](https://github.com/dev-stratum/structured-guard/actions/workflows/tests.yml)
+[![PyPI](https://img.shields.io/pypi/v/structured-guard)](https://pypi.org/project/structured-guard/)
 ![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 ![Zero dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)
@@ -44,6 +45,12 @@ Every failure costs a crashed run or a paid retry. `structured-guard` makes the 
 cases recoverable and the unrecoverable cases explicit, typed and cheap to correct.
 
 ## Install
+
+```bash
+pip install structured-guard
+```
+
+or straight from GitHub:
 
 ```bash
 pip install git+https://github.com/dev-stratum/structured-guard.git
@@ -426,9 +433,18 @@ package metadata that matches the project.
 - Provider formats change. The adapters read documented fields and ignore unknown ones; if a
   payload shape is not recognised you get a `JSONRepairError`, never a silent guess.
 
+## Contributing, security and changelog
+
+Bug reports and "payload that broke" reports are welcome; see
+[CONTRIBUTING.md](https://github.com/dev-stratum/structured-guard/blob/main/CONTRIBUTING.md).
+Please report vulnerabilities privately as described in
+[SECURITY.md](https://github.com/dev-stratum/structured-guard/blob/main/SECURITY.md).
+The release history is in
+[CHANGELOG.md](https://github.com/dev-stratum/structured-guard/blob/main/CHANGELOG.md).
+
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](https://github.com/dev-stratum/structured-guard/blob/main/LICENSE).
 
 ## Trademark notice
 

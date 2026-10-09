@@ -60,6 +60,8 @@ _LITERAL_ERRORS = (
     RecursionError,
     MemoryError,
 )
+_MAX_CALL_CHARS = 20_000
+_MAX_NESTING = 50
 _CALL_START = re.compile(r"[A-Za-z_][\w.]*\s*\(")
 _PREFIX = re.compile(r"^\s*malformed function call\s*:\s*", re.IGNORECASE)
 _QUOTE_MAP = str.maketrans(
@@ -164,8 +166,24 @@ def _callee(node: ast.expr) -> str | None:
     return None
 
 
+def _too_complex(chunk: str) -> bool:
+    """Is *chunk* big or nested enough to strain ``ast``'s stack limits?"""
+    if len(chunk) > _MAX_CALL_CHARS:
+        return True
+    depth = peak = 0
+    for ch in chunk:
+        if ch in "([{":
+            depth += 1
+            peak = max(peak, depth)
+        elif ch in ")]}":
+            depth -= 1
+    return peak > _MAX_NESTING
+
+
 def _call_in(chunk: str) -> RawCall | None:
     """Parse one Python-style call; only literal keyword arguments count."""
+    if _too_complex(chunk):
+        return None
     try:
         tree = ast.parse(chunk, mode="eval")
     except (SyntaxError, ValueError, RecursionError, MemoryError):
