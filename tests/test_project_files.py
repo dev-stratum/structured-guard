@@ -22,7 +22,7 @@ COMMUNITY = (
     ".github/ISSUE_TEMPLATE/payload_that_broke.yml",
     ".github/ISSUE_TEMPLATE/config.yml",
 )
-WORKFLOWS = (".github/workflows/tests.yml", ".github/workflows/release.yml")
+WORKFLOWS = (".github/workflows/tests.yml")
 
 
 def read(name):
