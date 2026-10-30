@@ -1,7 +1,6 @@
 # structured-guard
 
 [![tests](https://github.com/dev-stratum/structured-guard/actions/workflows/tests.yml/badge.svg)](https://github.com/dev-stratum/structured-guard/actions/workflows/tests.yml)
-[![PyPI](https://img.shields.io/pypi/v/structured-guard)](https://pypi.org/project/structured-guard/)
 ![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 ![Zero dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)
