@@ -45,7 +45,6 @@ def test_version_is_the_same_in_package_metadata_and_changelog():
 
 
 def test_release_workflow_publishes_with_trusted_publishing_only():
-    text = read(".github/workflows/release.yml")
     assert "pypa/gh-action-pypi-publish@release/v1" in text
     assert "id-token: write" in text and "environment: pypi" in text
     assert "types: [published]" in text
